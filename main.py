@@ -2,11 +2,14 @@ from fastapi import FastAPI
 import uvicorn
 import os
 
-app = FastAPI()
+app = FastAPI(title="Test Rest API")
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello from Railway + FastAPI"}
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    return {
+        "item_id": item_id,
+        "title": "Item title"
+    }
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
