@@ -5,17 +5,17 @@ import os
 
 app = FastAPI(title="Test Rest API")
 
-# Contoh model data
+# Model data
 class Item(BaseModel):
     name: str
     description: str | None = None
     price: float
 
-# Simulasi penyimpanan data di memori
+# Fake data
 fake_db = {}
 
-# GET: Ambil item berdasarkan ID
-@app.get("/items/{item_id}")
+# GET
+@app.get("/items/{item_id}", description="For get item base on ID")
 def read_item(item_id: int):
     item = fake_db.get(item_id)
     if item:
@@ -23,21 +23,21 @@ def read_item(item_id: int):
     return {"error": "Item not found"}
 
 # POST
-@app.post("/items/{item_id}")
+@app.post("/items/{item_id}", description="Make new item")
 def create_item(item_id: int, item: Item):
     if item_id in fake_db:
         return {"error": "Item already exists"}
     fake_db[item_id] = item.dict()
     return {"message": "Item created", "item": fake_db[item_id]}
 
-# PUT: Ganti seluruh isi item
-@app.put("/items/{item_id}")
+# PUT
+@app.put("/items/{item_id}", description="Edit data items")
 def update_item(item_id: int, item: Item):
     fake_db[item_id] = item.dict()
     return {"message": "Item replaced", "item": fake_db[item_id]}
 
-# PATCH: Ubah sebagian isi item
-@app.patch("/items/{item_id}")
+# PATCH
+@app.patch("/items/{item_id}", description="Edit")
 def partial_update_item(item_id: int, item: Item):
     stored_item = fake_db.get(item_id)
     if not stored_item:
@@ -50,7 +50,7 @@ def partial_update_item(item_id: int, item: Item):
     return {"message": "Item updated", "item": updated_item}
 
 # DELETE
-@app.delete("/items/{item_id}")
+@app.delete("/items/{item_id}", description="Delete data")
 def delete_item(item_id: int):
     if item_id in fake_db:
         del fake_db[item_id]
