@@ -1,3 +1,4 @@
 # Modul-modul yang diperlukan
+streamlit
 fastapi==0.116.1
 uvicorn==0.35.0
